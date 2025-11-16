@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { MessageCircleMore } from "lucide-react";
 import { features, placeholderImage } from "../lib/constant";
+import Faq from "./faq";
 
 const MainComponent = () => {
   const heroImage = placeholderImage.find((p) => p.id === "hero-image");
@@ -80,6 +81,9 @@ const MainComponent = () => {
             ))}
           </div>
         </div>
+      </section>
+      <section>
+        <Faq />
       </section>
     </main>
   );

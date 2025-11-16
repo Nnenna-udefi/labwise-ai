@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "ChatBot", href: "/chatbot" },
-  { label: "FAQ", href: "/faq" },
+  { label: "FAQ", href: "/#faq" },
 ];
 const Header = () => {
   const pathname = usePathname();
@@ -50,15 +50,17 @@ const Header = () => {
           </div>
           <div className="md:hidden block">
             <Sheet>
-              <SheetTrigger>
+              <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
                   {" "}
-                  <Menu className="w-6 h-6" />{" "}
-                  <span className="sr-only">Open menu</span>
+                  <span className="flex items-center">
+                    <Menu className="w-6 h-6" />
+                    <span className="sr-only">Open menu</span>
+                  </span>
                 </Button>
               </SheetTrigger>
 
-              <SheetContent side="right">
+              <SheetContent side="right" asChild>
                 <Link
                   href="/"
                   className="flex items-center gap-2 text-primary font-bold text-lg"
@@ -88,7 +90,7 @@ const Header = () => {
                 <div className="flex flex-col gap-3">
                   <Button
                     variant="outline"
-                    // asChild
+                    asChild
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <Link href="/login">Login</Link>
