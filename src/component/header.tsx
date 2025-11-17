@@ -51,7 +51,11 @@ const Header = () => {
           <div className="md:hidden block">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
                   {" "}
                   <span className="flex items-center">
                     <Menu className="w-6 h-6" />
