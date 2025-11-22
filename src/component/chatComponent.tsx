@@ -55,6 +55,7 @@ const ChatComponent = () => {
         role: "assistant",
         content: aiResponse,
       };
+      console.log("Ai response,", aiResponse);
       setMessages((prev) => [...prev, assistantMessage]);
     });
   };

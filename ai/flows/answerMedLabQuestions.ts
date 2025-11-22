@@ -30,9 +30,11 @@ export type AnswerMedicalLabTestQuestionsOutput = z.infer<
 export async function answerMedicalLabTestQuestions(
   input: AnswerMedicalLabTestQuestionsInput
 ): Promise<AnswerMedicalLabTestQuestionsOutput> {
+  // forwards the request to the actual ai flow
   return answerMedicalLabTestQuestionsFlow(input);
 }
 
+// defining the ai prompt
 const prompt = ai.definePrompt({
   name: "answerMedicalLabTestQuestionsPrompt",
   input: { schema: AnswerMedicalLabTestQuestionsInputSchema },
@@ -42,6 +44,7 @@ const prompt = ai.definePrompt({
 Question: {{{question}}}`,
 });
 
+// ai flow
 const answerMedicalLabTestQuestionsFlow = ai.defineFlow(
   {
     name: "answerMedicalLabTestQuestionsFlow",
@@ -50,6 +53,10 @@ const answerMedicalLabTestQuestionsFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await prompt(input);
+    console.log("Received input:", input);
+    console.log("Prompt output:", output);
+
+    // output! means “I trust the output is not null because the schema ensures it.”
     return output!;
   }
 );

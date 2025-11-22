@@ -1,6 +1,6 @@
 "use server";
 
-import { answerMedicalLabTestQuestions } from "@/app/ai/flows/answerMedLabQuestions";
+import { answerMedicalLabTestQuestions } from "@/ai/flows/answerMedLabQuestions";
 
 export async function getAiAnswer(question: string): Promise<string> {
   // if there is no question
