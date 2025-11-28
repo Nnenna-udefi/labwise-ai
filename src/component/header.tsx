@@ -42,10 +42,10 @@ const Header = () => {
           </nav>
           <div className="hidden md:flex gap-2 text-md">
             <Button variant={"ghost"}>
-              <Link href="/login">Log in</Link>
+              <Link href="/auth/login">Log in</Link>
             </Button>
             <Button asChild>
-              <Link href="/signup">Sign Up</Link>
+              <Link href="/auth/signup">Sign Up</Link>
             </Button>
           </div>
           <div className="md:hidden block">
@@ -97,10 +97,10 @@ const Header = () => {
                     asChild
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <Link href="/login">Login</Link>
+                    <Link href="/auth/login">Login</Link>
                   </Button>
                   <Button onClick={() => setIsMobileMenuOpen(false)}>
-                    <Link href="/signup">Sign Up</Link>
+                    <Link href="/auth/signup">Sign Up</Link>
                   </Button>
                 </div>
               </SheetContent>
