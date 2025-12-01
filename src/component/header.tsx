@@ -4,13 +4,20 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "../ui/button";
-import { Beaker, Menu } from "lucide-react";
+import { Beaker, Menu, User } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import { createClient } from "../lib/supabaseClient";
 import { useAuth } from "../hooks/use-auth";
-import { Avatar, AvatarImage } from "../ui/avatar";
-
-const supabase = createClient();
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "../ui/dropdownMenu";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -59,17 +66,52 @@ const Header = () => {
             {!loading &&
               (user ? (
                 <>
-                  <Link
-                    href="/profile"
-                    className="px-3 py-2 font-medium flex gap-3"
-                  >
-                    <Avatar>
-                      <AvatarImage />
-                    </Avatar>
-                    <Button variant="link"> Profile</Button>
-                  </Link>
-                  <p>{user.user_metadata.full_name}</p>
-                  <Button onClick={logout}>Logout</Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="relative cursor-pointer h-8 w-8 rounded-full"
+                      >
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage
+                            src="https://picsum.photos/seed/123/200/200"
+                            alt="User avatar"
+                          />
+                          <AvatarFallback>
+                            <User className="h-5 w-5" />
+                          </AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      className="w-56"
+                      align="end"
+                      forceMount
+                    >
+                      <DropdownMenuLabel className="font-normal">
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-lg font-medium leading-none">
+                            {user.user_metadata.full_name}
+                          </p>
+                          <p className="text-base py-2 leading-none text-muted-foreground">
+                            {user.user_metadata.email}
+                          </p>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link href="/profile">Profile</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>Billing</DropdownMenuItem>
+                      <DropdownMenuItem>Settings</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={logout}>
+                        Log out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  {/* <p>{user.user_metadata.full_name}</p> */}
+                  {/* <Button onClick={logout}>Logout</Button> */}
                 </>
               ) : (
                 <>
