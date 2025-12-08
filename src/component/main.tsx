@@ -15,17 +15,21 @@ const MainComponent = () => {
         <div className="container px-6 md:px-12">
           <div className="flex flex-col gap-6 md:flex-row">
             <div>
-              <h1 className="text-primary tracking-tighter text-3xl md:text-5xl font-bold">
+              <h1 className="text-primary tracking-tighter text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold">
                 Understand Your Lab Results, Instantly.
               </h1>
-              <p className="text-md md:text-xl text-foreground/80 py-3">
+              <p className="text-md md:text-xl text-foreground/80 py-3 lg:py-6 xl:text-2xl">
                 LabWise AI is your personal medical chatbot, providing clear,
                 concise answers to your questions about laboratory tests.
               </p>
               <Button size={"lg"}>
-                <Link href="/chatbot" className="flex gap-3">
+                <Link
+                  href="/chatbot"
+                  className="flex gap-3 lg:text-lg items-center"
+                >
                   {" "}
-                  Ask a Question <MessageCircleMore className="ml-2 w-5 h-5" />
+                  Ask a Question{" "}
+                  <MessageCircleMore className="ml-2 w-5 h-5 lg:w-8 lg:h-8" />
                 </Link>
               </Button>
             </div>
@@ -47,7 +51,7 @@ const MainComponent = () => {
         className="w-full py-12 md:py-20 lg:py-32 px-6 md:px-12"
       >
         <div className="flex flex-col gap-3 justify-center items-center">
-          <h2 className="bg-secondary/70 w-fit py-1 px-3 text-sm rounded-lg text-foreground">
+          <h2 className="bg-secondary/70 w-fit py-1 px-3 text-sm rounded-lg text-foreground xl:text-lg lg:text-base">
             Key Features
           </h2>
           <h3 className="text-foreground font-extrabold text-2xl md:text-5xl">

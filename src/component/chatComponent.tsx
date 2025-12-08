@@ -61,7 +61,7 @@ const ChatComponent = () => {
   };
 
   return (
-    <div className="flex flex-col my-6 h-[calc(100vh-20rem)] bg-foreColor border rounded-lg shadow-lg">
+    <div className="flex flex-col my-6 min-h-screen bg-foreColor border rounded-lg shadow-lg">
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
         <div className="space-y-6">
           {messages.length === 0 && (

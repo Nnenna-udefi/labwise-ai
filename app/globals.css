@@ -11,6 +11,7 @@
   --secondary: #f1f5f9;
   --secondary-foreground: #0f172a;
   --lightBlue: #00bdd6;
+  --darkBorder: #1e293b;
 }
 
 @theme inline {

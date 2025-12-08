@@ -5,7 +5,7 @@ import { createClient } from "@/src/lib/supabaseClient";
 import { Button } from "@/src/ui/button";
 import { Input } from "@/src/ui/input";
 import Link from "next/link";
-import { toast } from "@/src/hooks/use-toast";
+import { useToast } from "@/src/hooks/use-toast";
 
 const supabase = createClient();
 
@@ -15,6 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -46,7 +47,7 @@ const Login = () => {
   }
 
   return (
-    <div className="py-10 px-4 max-h-screen">
+    <div className="py-10 px-4 min-h-screen">
       <div className="bg-foreColor container rounded-2xl max-w-[500px] mx-auto px-4 md:px-6 py-8 lg:px-8  h-full flex flex-col gap-4">
         <div className="text-center py-4">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">

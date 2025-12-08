@@ -10,10 +10,10 @@ export default async function ProfilePage() {
   const { data } = await supabase.auth.getUser();
   const user = data.user;
 
-  if (!user) redirect("/auth/login");
+  if (!user) redirect("/login");
 
   return (
-    <div className="container mx-auto max-w-2xl py-12 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto max-w-2xl py-12 px-4 sm:px-6 lg:px-8 max-h-screen">
       <div className="text-center mb-12">
         <h1 className="text-3xl font-bold tracking-tight text-primary font-headline sm:text-4xl">
           Your Profile

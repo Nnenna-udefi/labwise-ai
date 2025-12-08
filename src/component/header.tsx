@@ -116,10 +116,10 @@ const Header = () => {
               ) : (
                 <>
                   <Button variant={"ghost"}>
-                    <Link href="/auth/login">Log in</Link>
+                    <Link href="/login">Log in</Link>
                   </Button>
                   <Button asChild>
-                    <Link href="/auth/signup">Sign Up</Link>
+                    <Link href="/signup">Sign Up</Link>
                   </Button>
                 </>
               ))}
@@ -190,10 +190,10 @@ const Header = () => {
                           asChild
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
-                          <Link href="/auth/login">Login</Link>
+                          <Link href="/login">Login</Link>
                         </Button>
                         <Button onClick={() => setIsMobileMenuOpen(false)}>
-                          <Link href="/auth/signup">Sign Up</Link>
+                          <Link href="/signup">Sign Up</Link>
                         </Button>
                       </>
                     ))}

@@ -4,11 +4,13 @@ import { createClient } from "@/src/lib/supabaseClient";
 import { Button } from "@/src/ui/button";
 import { Input } from "@/src/ui/input";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const supabase = createClient();
 
 const Signup = () => {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +27,7 @@ const Signup = () => {
         data: {
           full_name: name, // saves to user metadata on supabase
         },
-        emailRedirectTo: `${window.location.origin}/auth/login`,
+        emailRedirectTo: `${window.location.origin}/login`,
       },
     });
     setLoading(false);
@@ -42,9 +44,10 @@ const Signup = () => {
         description: "Check your email to confirm your account.",
       });
     }
+    router.push(`/signUp/emailSent?email=${encodeURIComponent(email)}`);
   }
   return (
-    <div className="max-h-screen py-10 px-4">
+    <div className="min-h-screen py-10 px-4">
       <div className="bg-foreColor container rounded-2xl max-w-[500px] mx-auto px-4 md:px-6 py-8 lg:px-8  h-full flex flex-col gap-4">
         <div className="text-center py-4">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
@@ -75,11 +78,11 @@ const Signup = () => {
           </div>
           <div className="flex flex-col gap-2">
             {" "}
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Password (minimum of 8 characters)</label>
             <Input
               value={password}
               type="password"
-              placeholder=". . . . . . ."
+              placeholder="*******"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
@@ -91,7 +94,7 @@ const Signup = () => {
         <div className="mt-6 text-center text-sm">
           Already have an account?{" "}
           <Link
-            href="/auth/login"
+            href="/login"
             className="text-primary hover:underline font-medium"
           >
             Log in

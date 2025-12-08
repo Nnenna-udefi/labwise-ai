@@ -54,13 +54,15 @@ export const SheetContent = React.forwardRef<
         )}
         {...props}
       >
-        <Dialog.Title className="hidden">Sheet Panel</Dialog.Title>
+        <div>
+          <Dialog.Title className="hidden">Sheet Panel</Dialog.Title>
 
-        {children}
-        <Dialog.Close className="absolute right-4 top-4 opacity-80 hover:opacity-100 rounded-sm ">
-          <X className="h-5 w-5" />
-          <span className="sr-only">Close</span>
-        </Dialog.Close>
+          {children}
+          <Dialog.Close className="absolute right-4 top-4 opacity-80 hover:opacity-100 rounded-sm ">
+            <X className="h-5 w-5" />
+            <span className="sr-only">Close</span>
+          </Dialog.Close>
+        </div>
       </Dialog.Content>
     </Dialog.Portal>
   );
