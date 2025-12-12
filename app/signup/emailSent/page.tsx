@@ -1,5 +1,5 @@
 import EmailSent from "@/src/component/emailSent";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 
 const EmailSentPage = () => {
   return (

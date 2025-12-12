@@ -7,12 +7,15 @@ import React, {
   useTransition,
 } from "react";
 import { ScrollArea } from "../ui/scrollArea";
-import { Bot, Loader2, Paperclip, Send, User } from "lucide-react";
+import { Bot, Loader2, Paperclip, Send, Trash2, User } from "lucide-react";
 import { cn } from "../lib/utils";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { getAiAnswer } from "../lib/actions";
+import { getChatHistory } from "../lib/getChatHistory";
+import { saveMessage } from "../lib/saveMessage";
+import { deleteChats } from "../lib/deleteChat";
 
 interface Message {
   role: "user" | "assistant";
@@ -24,6 +27,19 @@ const ChatComponent = () => {
   const [input, setInput] = useState("");
   const [isPending, startTransition] = useTransition();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    async function loadHistory() {
+      const history = await getChatHistory();
+      setMessages(
+        history.map((msg) => ({
+          role: msg.role,
+          content: msg.content,
+        }))
+      );
+    }
+    loadHistory();
+  }, []);
 
   // Every time the messages array changes i.e when a new chat message is added,
   //  the effect runs, it scrolls the chat container to the bottom
@@ -42,6 +58,7 @@ const ChatComponent = () => {
 
     const userMessage: Message = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
+    saveMessage("user", input); // save user message
     setInput("");
 
     // useTransition() is used when you want to update state without blocking the UI
@@ -55,8 +72,10 @@ const ChatComponent = () => {
         role: "assistant",
         content: aiResponse,
       };
-      console.log("Ai response,", aiResponse);
+      // console.log("Ai response,", aiResponse);
       setMessages((prev) => [...prev, assistantMessage]);
+
+      await saveMessage("assistant", aiResponse); // save assistant message
     });
   };
 
@@ -154,6 +173,17 @@ const ChatComponent = () => {
               <Send className="h-5 w-5" />
             )}
             <span className="sr-only">Send</span>
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={async () => {
+              await deleteChats();
+              setMessages([]);
+            }}
+            className="bg-danger hover:bg-white hover:text-danger text-white"
+          >
+            <Trash2 className=" w-5 h-5 font-bold" />
           </Button>
         </form>
       </div>

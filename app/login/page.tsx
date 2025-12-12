@@ -5,7 +5,7 @@ import { createClient } from "@/src/lib/supabaseClient";
 import { Button } from "@/src/ui/button";
 import { Input } from "@/src/ui/input";
 import Link from "next/link";
-import { useToast } from "@/src/hooks/use-toast";
+// import { useToast } from "@/src/hooks/use-toast";
 
 const supabase = createClient();
 
@@ -15,7 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -38,10 +38,10 @@ const Login = () => {
     setEmail("");
     setPassword("");
 
-    toast({
-      title: "Login successful",
-      description: "Redirecting to your dashboard...",
-    });
+    // toast({
+    //   title: "Login successful",
+    //   description: "Redirecting to your dashboard...",
+    // });
 
     router.push("/");
   }

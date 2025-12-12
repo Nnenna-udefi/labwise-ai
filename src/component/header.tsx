@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "../ui/button";
@@ -25,10 +25,15 @@ const navItems = [
   { label: "FAQ", href: "/#faq" },
 ];
 const Header = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, logout, loading } = useAuth();
 
+  const handleLogout = async () => {
+    await logout(); // call your logout function
+    router.push("/"); // redirect after logout
+  };
   // log out function
   // async function handleLogout() {
   //   await supabase.auth.signOut();
@@ -105,13 +110,11 @@ const Header = () => {
                       <DropdownMenuItem>Billing</DropdownMenuItem>
                       <DropdownMenuItem>Settings</DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={logout}>
+                      <DropdownMenuItem onClick={handleLogout}>
                         Log out
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  {/* <p>{user.user_metadata.full_name}</p> */}
-                  {/* <Button onClick={logout}>Logout</Button> */}
                 </>
               ) : (
                 <>
@@ -181,7 +184,7 @@ const Header = () => {
                         >
                           <Link href="/profile">Profile</Link>
                         </Button>
-                        <Button onClick={logout}>Logout</Button>
+                        <Button onClick={handleLogout}>Logout</Button>
                       </>
                     ) : (
                       <>
