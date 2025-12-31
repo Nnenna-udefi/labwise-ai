@@ -8,7 +8,7 @@ export default function EmailSent() {
   const email = searchParams.get("email");
   return (
     <div className="min-h-screen py-10 px-4 flex items-center justify-center">
-      <div className="bg-foreColor container rounded-2xl max-w-[500px] mx-auto px-6 py-10 flex flex-col gap-6 text-center">
+      <div className="bg-foreColor container rounded-2xl max-w-125 mx-auto px-6 py-10 flex flex-col gap-6 text-center">
         <Avatar className="h-12 w-12 mx-auto border">
           <AvatarFallback>
             <MailOpen className="h-6 w-6 text-primary" />

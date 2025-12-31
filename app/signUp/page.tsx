@@ -3,6 +3,7 @@ import { toast } from "@/src/hooks/use-toast";
 import { createClient } from "@/src/lib/supabaseClient";
 import { Button } from "@/src/ui/button";
 import { Input } from "@/src/ui/input";
+import { MessageCircleWarning } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -37,6 +38,22 @@ const Signup = () => {
       setError(error.message);
       return;
     }
+
+    if (password !== passwordAgain) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    // Regex checks for password criteria
+    const minLength = password.length >= 8;
+    const hasNumber = /\d/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasCapital = /[A-Z]/.test(password);
+
+    if (!minLength || !hasNumber || !hasSpecial || !hasCapital) {
+      setError("Password does not meet the required criteria.");
+      return;
+    }
     if (!error) {
       setName("");
       setEmail("");
@@ -60,6 +77,12 @@ const Signup = () => {
           </p>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:gap-6">
+          {error && (
+            <div className="flex gap-3">
+              <MessageCircleWarning className="text-danger" />{" "}
+              <p className="text-danger md:text-xl">{error}</p>
+            </div>
+          )}
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Full Name</label>
             <Input
@@ -80,7 +103,7 @@ const Signup = () => {
           </div>
           <div className="flex flex-col gap-2">
             {" "}
-            <label htmlFor="password">Password (minimum of 8 characters)</label>
+            <label htmlFor="password">Password</label>
             <Input
               value={password}
               type="password"
@@ -89,7 +112,7 @@ const Signup = () => {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="password">Enter Password Again:</label>
+            <label htmlFor="password">Enter Password Again</label>
             <Input
               value={passwordAgain}
               type="password"
@@ -110,8 +133,8 @@ const Signup = () => {
               match: "Passwords must match.",
             }}
           />
-          {error && <p className="text-danger">{error}</p>}
-          <Button disabled={loading}>
+
+          <Button disabled={loading} className="text-lg">
             {loading ? "Signing up..." : "Sign Up"}
           </Button>
         </form>

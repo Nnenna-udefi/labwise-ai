@@ -56,7 +56,9 @@ export const SheetContent = React.forwardRef<
       >
         <div>
           <Dialog.Title className="hidden">Sheet Panel</Dialog.Title>
-
+          <Dialog.Description className="sr-only">
+            This panel contains settings and options for the user.
+          </Dialog.Description>
           {children}
           <Dialog.Close className="absolute right-4 top-4 opacity-80 hover:opacity-100 rounded-sm ">
             <X className="h-5 w-5" />

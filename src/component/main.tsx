@@ -58,7 +58,7 @@ const MainComponent = () => {
             {" "}
             Your Health, Simplified
           </h3>
-          <p className="text-foreground/80 max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed text-center">
+          <p className="text-foreground/80 max-w-225 md:text-xl/relaxed lg:text-base/relaxed text-center">
             LabWise AI is designed to empower you with knowledge, making complex
             medical information accessible and understandable.
           </p>

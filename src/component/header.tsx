@@ -38,7 +38,7 @@ const Header = () => {
   // async function handleLogout() {
   //   await supabase.auth.signOut();
   // }
-  console.log(user);
+
   return (
     <header className="sticky shadow-sm bg-foreColor ">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -107,8 +107,8 @@ const Header = () => {
                       <DropdownMenuItem asChild>
                         <Link href="/profile">Profile</Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem>Billing</DropdownMenuItem>
-                      <DropdownMenuItem>Settings</DropdownMenuItem>
+                      {/* <DropdownMenuItem>Billing</DropdownMenuItem>
+                      <DropdownMenuItem>Settings</DropdownMenuItem> */}
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={handleLogout}>
                         Log out
@@ -122,7 +122,7 @@ const Header = () => {
                     <Link href="/login">Log in</Link>
                   </Button>
                   <Button asChild>
-                    <Link href="/signup">Sign Up</Link>
+                    <Link href="/signUp">Sign Up</Link>
                   </Button>
                 </>
               ))}
@@ -196,7 +196,7 @@ const Header = () => {
                           <Link href="/login">Login</Link>
                         </Button>
                         <Button onClick={() => setIsMobileMenuOpen(false)}>
-                          <Link href="/signup">Sign Up</Link>
+                          <Link href="/signUp">Sign Up</Link>
                         </Button>
                       </>
                     ))}

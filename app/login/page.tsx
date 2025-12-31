@@ -48,7 +48,7 @@ const Login = () => {
 
   return (
     <div className="py-10 px-4 min-h-screen">
-      <div className="bg-foreColor container rounded-2xl max-w-[500px] mx-auto px-4 md:px-6 py-8 lg:px-8  h-full flex flex-col gap-4">
+      <div className="bg-foreColor container rounded-2xl max-w-125 mx-auto px-4 md:px-6 py-8 lg:px-8  h-full flex flex-col gap-4">
         <div className="text-center py-4">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
             Log In
@@ -85,7 +85,7 @@ const Login = () => {
         <div className="mt-6 text-center text-sm">
           Don&apos;t have an account?{" "}
           <Link
-            href="/auth/signup"
+            href="/signUp"
             className="text-primary hover:underline font-medium"
           >
             Sign Up
