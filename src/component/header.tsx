@@ -130,7 +130,7 @@ const Header = () => {
 
           {/* mobile menu */}
           <div className="md:hidden block">
-            <Sheet>
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
@@ -184,7 +184,14 @@ const Header = () => {
                         >
                           <Link href="/profile">Profile</Link>
                         </Button>
-                        <Button onClick={handleLogout}>Logout</Button>
+                        <Button
+                          onClick={() => {
+                            handleLogout();
+                            setIsMobileMenuOpen(false);
+                          }}
+                        >
+                          Logout
+                        </Button>
                       </>
                     ) : (
                       <>
