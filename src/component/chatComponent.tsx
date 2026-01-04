@@ -7,7 +7,7 @@ import React, {
   useTransition,
 } from "react";
 import { ScrollArea } from "../ui/scrollArea";
-import { Bot, Loader2, Paperclip, Send, Trash2, User } from "lucide-react";
+import { Bot, Loader2, Paperclip, Send, User } from "lucide-react";
 import { cn } from "../lib/utils";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -15,7 +15,7 @@ import { Input } from "../ui/input";
 import { getAiAnswer } from "../lib/actions";
 import { getChatHistory } from "../lib/getChatHistory";
 import { saveMessage } from "../lib/saveMessage";
-import { deleteChats } from "../lib/deleteChat";
+// import { deleteChats } from "../lib/deleteChat";
 
 interface Message {
   role: "user" | "assistant";
@@ -27,6 +27,8 @@ const ChatComponent = () => {
   const [input, setInput] = useState("");
   const [isPending, startTransition] = useTransition();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [extractedText, setExtractedText] = useState<string>("");
 
   useEffect(() => {
     async function loadHistory() {
@@ -52,6 +54,20 @@ const ChatComponent = () => {
     }
   }, [messages]);
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type === "text/plain") {
+      const text = await file.text();
+      setExtractedText(text);
+    } else {
+      setExtractedText(
+        "Unsupported file type. Please upload a .txt or .pdf or .doc document."
+      );
+    }
+  };
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -67,18 +83,22 @@ const ChatComponent = () => {
     // But wrapping the slow update inside startTransition tells React that that part is "low priority state update" so don't freeze the UI while it runs.
     // Let the app stay responsive.
     startTransition(async () => {
-      const aiResponse = await getAiAnswer(input);
+      const combinedInput = extractedText
+        ? ` The following is content from a medical document: ${extractedText}
+User question: ${input} `
+        : input;
+
+      const aiResponse = await getAiAnswer(combinedInput);
       const assistantMessage: Message = {
         role: "assistant",
         content: aiResponse,
       };
-      // console.log("Ai response,", aiResponse);
       setMessages((prev) => [...prev, assistantMessage]);
 
       await saveMessage("assistant", aiResponse); // save assistant message
     });
   };
-
+  console.log(extractedText);
   return (
     <div className="flex flex-col my-6 min-h-screen bg-foreColor border rounded-lg shadow-lg">
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
@@ -109,7 +129,7 @@ const ChatComponent = () => {
               )}
               <div
                 className={cn(
-                  "max-w-md rounded-lg p-3 text-sm",
+                  "max-w-md rounded-lg p-3 text-left text-sm",
                   message.role === "user"
                     ? "bg-primary text-primary-foreground"
                     : "bg-secondary"
@@ -145,15 +165,49 @@ const ChatComponent = () => {
 
       <div className="border-t p-4">
         <form onSubmit={handleSubmit} className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
+          {/* <Button
+            variant="outline"
             type="button"
-            className="shrink-0"
+            onClick={async () => {
+              await deleteChats();
+              setMessages([]);
+            }}
+            className="bg-danger hover:bg-white hover:text-danger text-white"
           >
-            <Paperclip className="h-5 w-5" />
-            <span className="sr-only">Attach file</span>
-          </Button>
+            {/* <Trash2 className=" w-5 h-5 font-bold" /> */}
+          {/* Clear Chat */}
+          {/* </Button> */}
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            hidden
+            accept=".pdf,.txt,.doc,.docx,.jpg,.png,.jpeg"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+
+              console.log("Selected file:", file.name);
+            }}
+          />
+
+          {extractedText ? (
+            <p className="text-xs text-muted-foreground mt-1">
+              📎 Document attached
+            </p>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              // className="shrink-0"
+            >
+              <Paperclip className="h-5 w-5" />
+              <span className="sr-only">Attach file</span>
+            </Button>
+          )}
+
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -173,17 +227,6 @@ const ChatComponent = () => {
               <Send className="h-5 w-5" />
             )}
             <span className="sr-only">Send</span>
-          </Button>
-          <Button
-            variant="outline"
-            type="button"
-            onClick={async () => {
-              await deleteChats();
-              setMessages([]);
-            }}
-            className="bg-danger hover:bg-white hover:text-danger text-white"
-          >
-            <Trash2 className=" w-5 h-5 font-bold" />
           </Button>
         </form>
       </div>
