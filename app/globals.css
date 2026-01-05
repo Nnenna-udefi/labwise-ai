@@ -12,6 +12,7 @@
   --secondary-foreground: #0f172a;
   --lightBlue: #00bdd6;
   --darkBorder: #1e293b;
+  --lightPrimary: #83b2f0;
 }
 
 @theme inline {
@@ -27,6 +28,7 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-lightPrimary: var(--lightPrimary);
 }
 
 @layer base {

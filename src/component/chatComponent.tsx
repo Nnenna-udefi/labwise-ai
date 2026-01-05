@@ -7,7 +7,7 @@ import React, {
   useTransition,
 } from "react";
 import { ScrollArea } from "../ui/scrollArea";
-import { Bot, Loader2, Paperclip, Send, User } from "lucide-react";
+import { Bot, Loader2, Paperclip, Send, User, Trash2 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -15,6 +15,9 @@ import { Input } from "../ui/input";
 import { getAiAnswer } from "../lib/actions";
 import { getChatHistory } from "../lib/getChatHistory";
 import { saveMessage } from "../lib/saveMessage";
+import { toast } from "../hooks/use-toast";
+import { extractTextFromPdf } from "../lib/extractPdf";
+import { deleteChats } from "../lib/deleteChat";
 // import { deleteChats } from "../lib/deleteChat";
 
 interface Message {
@@ -29,6 +32,9 @@ const ChatComponent = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [extractedText, setExtractedText] = useState<string>("");
+  const [attachedFile, setAttachedFile] = useState<File | null>(null);
+  const [isExtracting, setIsExtracting] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     async function loadHistory() {
@@ -58,13 +64,51 @@ const ChatComponent = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.type === "text/plain") {
-      const text = await file.text();
-      setExtractedText(text);
-    } else {
-      setExtractedText(
-        "Unsupported file type. Please upload a .txt or .pdf or .doc document."
-      );
+    setAttachedFile(file);
+    setIsExtracting(true);
+
+    try {
+      if (file.type === "text/plain") {
+        const text = await file.text();
+        setExtractedText(text);
+      } else if (file.type === "application/pdf") {
+        try {
+          const text = await extractTextFromPdf(file);
+
+          if (!text) {
+            toast({
+              title: "Document attached",
+              description:
+                "This PDF appears to be scanned. Text extraction may be limited.",
+            });
+          }
+
+          setExtractedText(text);
+        } catch {
+          toast({
+            title: "Document attached",
+            description: "PDF attached, but text could not be extracted.",
+          });
+
+          // Important: DO NOT clear the file
+          setExtractedText("");
+        }
+      } else {
+        toast({
+          title: "Unsupported file type",
+          description: "Please upload a .doc or .pdf document",
+        });
+        setAttachedFile(null);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      toast({
+        title: "File processing failed",
+        description: "Could not read the document",
+      });
+      setAttachedFile(null);
+    } finally {
+      setIsExtracting(false);
     }
   };
 
@@ -98,9 +142,60 @@ User question: ${input} `
       await saveMessage("assistant", aiResponse); // save assistant message
     });
   };
-  console.log(extractedText);
+  // useEffect(() => {
+  //   console.log("Extracted text updated:", extractedText);
+  // }, [extractedText]);
+
   return (
     <div className="flex flex-col my-6 min-h-screen bg-foreColor border rounded-lg shadow-lg">
+      <div className="flex items-center justify-between border-b p-3">
+        <h2 className="text-lg font-semibold px-2">Chat</h2>
+        {messages.length > 0 && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setShowConfirm(true)}
+            className="h-8 w-8 hover:bg-danger hover:text-white"
+          >
+            <Trash2 className="h-4 w-4 text-muted-foreground" />
+            <span className="sr-only">Clear Chat</span>
+          </Button>
+        )}
+      </div>
+      {showConfirm && (
+        <div className="absolute mx-auto right-40 z-50 md:w-80 w-64 rounded-lg border bg-white p-4 shadow-lg">
+          <h1 className="text-xl font-bold md:text-2xl text-foreground">
+            Clear all chat messages?
+          </h1>
+          <p className="py-3 text-sm text-muted-foreground">
+            Are you sure, you want to clear all chats? This action cannot be
+            undone.
+          </p>
+
+          <div className="mt-4 flex justify-between gap-2">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setShowConfirm(false)}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              size="sm"
+              variant="danger"
+              onClick={async () => {
+                await deleteChats();
+                setMessages([]);
+                setShowConfirm(false);
+              }}
+            >
+              Clear
+            </Button>
+          </div>
+        </div>
+      )}
+
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
         <div className="space-y-6">
           {messages.length === 0 && (
@@ -131,7 +226,7 @@ User question: ${input} `
                 className={cn(
                   "max-w-md rounded-lg p-3 text-left text-sm",
                   message.role === "user"
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-lightBlue text-primary-foreground"
                     : "bg-secondary"
                 )}
               >
@@ -165,46 +260,40 @@ User question: ${input} `
 
       <div className="border-t p-4">
         <form onSubmit={handleSubmit} className="flex items-center gap-2">
-          {/* <Button
-            variant="outline"
-            type="button"
-            onClick={async () => {
-              await deleteChats();
-              setMessages([]);
-            }}
-            className="bg-danger hover:bg-white hover:text-danger text-white"
-          >
-            {/* <Trash2 className=" w-5 h-5 font-bold" /> */}
-          {/* Clear Chat */}
-          {/* </Button> */}
-
           <input
             type="file"
             ref={fileInputRef}
             hidden
-            accept=".pdf,.txt,.doc,.docx,.jpg,.png,.jpeg"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-
-              console.log("Selected file:", file.name);
-            }}
+            accept=".pdf, .txt, .doc, .docx"
+            onChange={handleFileChange}
           />
 
-          {extractedText ? (
-            <p className="text-xs text-muted-foreground mt-1">
-              📎 Document attached
-            </p>
+          {attachedFile ? (
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              📎 {attachedFile.name}
+              {isExtracting && <span>(processing…)</span>}
+              <button
+                type="button"
+                onClick={() => {
+                  setAttachedFile(null);
+                  setExtractedText("");
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                  }
+                }}
+                className="underline"
+              >
+                remove
+              </button>
+            </div>
           ) : (
             <Button
               variant="ghost"
               size="icon"
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              // className="shrink-0"
             >
               <Paperclip className="h-5 w-5" />
-              <span className="sr-only">Attach file</span>
             </Button>
           )}
 
