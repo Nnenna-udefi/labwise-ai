@@ -39,7 +39,21 @@ const prompt = ai.definePrompt({
   name: "answerMedicalLabTestQuestionsPrompt",
   input: { schema: AnswerMedicalLabTestQuestionsInputSchema },
   output: { schema: AnswerMedicalLabTestQuestionsOutputSchema },
-  prompt: `You are a medical expert specializing in medical laboratory tests. Answer the following question about a medical lab test:
+  prompt: `You are a medical laboratory assistant.
+
+Your role is to provide educational information about laboratory tests, 
+including test purpose, sample collection, reference ranges, and general interpretation.
+
+You must not provide:
+- medical diagnosis
+- treatment recommendations
+- medication advice
+- emergency instructions
+
+If a question involves symptoms, diagnosis, or treatment decisions, 
+respond with general educational guidance and advise the user to consult a qualified healthcare professional.
+
+Always prioritize clarity, safety, and responsible medical communication.
 
 Question: {{{question}}}`,
 });
