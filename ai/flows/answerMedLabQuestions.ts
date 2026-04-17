@@ -5,7 +5,6 @@ import { ai } from "../genkit";
 
 /**
  * @fileOverview A medical lab test question answering AI agent.
- *
  * - answerMedicalLabTestQuestions - A function that handles the medical lab test question answering process.
  * - AnswerMedicalLabTestQuestionsInput - The input type for the answerMedicalLabTestQuestions function.
  * - AnswerMedicalLabTestQuestionsOutput - The return type for the answerMedicalLabTestQuestions function.
