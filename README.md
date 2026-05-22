@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔬 LabWise AI
 
-## Getting Started
+> An intelligent, personal medical chatbot designed to demystify clinical diagnostics. LabWise AI provides clear, concise, and accessible insights into complex laboratory test results, bridges the communication gap between patients and medical reports, and promotes informed health literacy.
 
-First, run the development server:
+[Live Demo](https://labwise-ai.vercel.app/) | [Report Bug](https://github.com/Nnenna-udefi/labwise-ai/issues)
+
+---
+
+## 🛠️ Tech Stack
+
+LabWise AI leverages a robust, production-ready stack designed for speed, security, and smooth user experience:
+
+- **Framework & UI:** Next.js (App Router), React, Tailwind CSS, Radix UI, Lucide React
+- **Backend & Database:** Supabase (Authentication & Database storage)
+- **AI & Orchestration:** Google Gemini API, Firebase Genkit (`genkit-ai`)
+
+---
+
+## ✨ Features
+
+- 💬 **Context-Aware Medical Conversationalist:** Powered by the Gemini API to break down complex medical jargon (e.g., hematology panels, metabolic profiles) into digestible, safe, and clear explanations.
+- 🏗️ **Structured AI Workflows:** Built using **Genkit AI** to manage prompts, handle structured schemas, and ensure robust, predictable AI responses.
+- 🔐 **Secure Session Management:** Integrated with Supabase Auth to guarantee user privacy, data isolation, and secure storage for user queries.
+- 🎨 **Accessible & Fluid UI:** Fully accessible design primitives courtesy of Radix UI, wrapped in a polished, responsive interface styled with Tailwind CSS.
+
+---
+
+## 📸 Architecture & Preview
+
+<!-- Place an application screenshot, UI mockup, or component flow diagram here -->
+
+![LabWise AI Dashboard Preview](./images/home.png)
+![LabWise AI Chatbot interface](./images/chatbot.png)
+
+---
+
+## ⚙️ Local Development Setup
+
+Follow these steps to clone the repository and run LabWise AI in your local environment.
+
+### Prerequisites
+
+Ensure you have **Node.js (v18+)** and **npm/pnpm** installed.
+
+```bash
+node -v
+npm -v
+```
+
+## Installations
+
+```bash
+git clone [https://github.com/nnennaudefi/labwise-ai.git](https://github.com/nnennaudefi/labwise-ai.git)
+
+cd labwise-ai
+```
+
+## Install project dependencies
+
+```
+npm install
+```
+
+## Configure Environment Vaiiables
+
+Create a .env.local file in the root of your directory and add your development keys:
+
+```bash
+# Supabase Configuration
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Gemini API Key
+   GEMINI_API_KEY=your_google_gemini_api_key
+```
+
+## Initialize Genkit (Optional for prompt development)
+
+If you wish to experiment with or modify the Genkit schemas using the local Developer UI, run:
+
+```bash
+npx genkit start
+```
+
+## Run the Next.js development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser to interact with the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# ⚠️ Disclaimer
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+LabWise AI is an educational tool meant to increase diagnostic literacy and aid communication. It does not provide official medical diagnoses, replace professional clinical evaluation, or substitute the direct oversight of licensed Medical Laboratory Scientists or Physicians.
 
-## Learn More
+# License
 
-To learn more about Next.js, take a look at the following resources:
+MIT License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Nnenna Udefi](https://github.com/Nnenna-udefi)
